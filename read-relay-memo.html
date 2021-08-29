@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>끝말잇기</title>
+</head>
+<body>
+  <div><span id="order">3</span>번째 참가자</div>
+  <div>제시어: <span id="word"></span></div>
+  <input type="text">
+  <button>입력</button>
+  <script>
+    const number = parseInt(prompt("몇 명이 참가하나요?"), 10);
+    alert(number);
+    const isRight = confirm(number);  //return boolean 확인 취소 버튼 나옴
+    //console.log('number', number);
+
+    document.querySelector('#word');
+    // id로 select # , class로 select .
+    // class 여러개 선언 가능 <button class='btn target'>
+
+    // querySelector 에서 한칸 띄어쓰면 'div span'은 div의 자손이 span인 것
+    // 직속 자손을 고르고 싶으면 document.querySelector('div>span')
+
+    //const $button = document.querySelector('button');
+    //document.querySelectorAll('input') -> NodeList 객체
+    // 리스너함수/콜백함수/익명함수 document.querySelector().addEventListener('이벤트 이름', function() { });
+    document.querySelector('input').addEventListener('input', function(event) {
+      console.log(event.target.value);
+    });
+    // 화살표 함수
+    documnet.querySelector('button').addEventListener('click', () => {
+      console.log('버튼 클릭');
+    });
+
+    // 가장 첫번째 사람인지 확인
+    const onClickButton = () => {
+      if(!word) {
+        // 제시어가 비어있다면
+        document.querySelector('#order').value = 1;
+      }
+    }
+
+    // input창에 입력한 글자 받기
+    const onInput = (event) => {
+      
+    }
+  
+
+    // function() { console.log(arguments)}
+  </script>
+</body>
+</html>
