@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #result {
+            width: 100px;
+            height: 50px;
+            margin: 5px;
+            text-align: right;
+        }
+
+        #operator {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            text-align: center;
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <input readonly id="operator">
+    <input readonly id="result">
+    <div class="row">
+        <button id="num-7">7</button>
+        <button id="num-8">8</button>
+        <button id="num-9">9</button>
+        <button id="plus">+</button>
+    </div>
+    <div class="row">
+        <button id="num-4">4</button>
+        <button id="num-5">5</button>
+        <button id="num-6">6</button>
+        <button id="sub">-</button>
+    </div>
+    <div class="row">
+        <button id="num-1">1</button>
+        <button id="num-2">2</button>
+        <button id="num-3">3</button>
+        <button id="divide">/</button>
+    </div>
+    <div class="row">
+        <button id="clear">C</button>
+        <button id="num-0">0</button>
+        <button id="calculate">=</button>
+        <button id="multiply">x</button>
+    </div>
+    <script>
+        let first = '';
+        let second = '';
+        let operator = '';
+        const $operator = document.querySelector('#operator');
+        const $result = document.querySelector('#result');
+        // const onClickNumber = (num) => () => {
+        //     // 고차함수(high order function) : 함수가 함수를 리턴
+        //         if (operator) {
+        //             second += num;
+        //         } else {
+        //             first += num;
+        //         }
+        //         $result.value += num;   // 화면에 표시
+        // }
+        const onClickNumber = (event) => {
+
+            //연산자가 비었는가?
+            if (!operator) {
+                // 첫번째 숫자 입력
+                first += event.target.textContent;
+                $result.value += first;
+                return;
+            }
+            // 연산자가 이미 있다면 -> 두번쨰 값 입력
+            if (!second) {
+                $result.value = '';
+            }
+            second += event.target.textContent;
+            $result.value += second;
+        }
+
+
+        const onClickOperator = (event) => {
+
+            // 첫번쨰, 두번째 숫자 있고 연산자 있으면 일차연산
+            if (first && second && operator) {
+                switch (operator) {
+                    case '+':
+                        first = parseInt(first) + parseInt(second);
+                        break;
+                    case '-':
+                        first = parseInt(first) - parseInt(second);
+                        break;
+                    case 'x':
+                        first = parseInt(first) * parseInt(second);
+                        break;
+                    case '/':
+                        first = parseInt(first) / parseInt(second);
+                        break;
+                    default:
+                        break;
+                }
+                operator = event.target.textContent;
+                $result.value = '';
+                second = '';
+                return ;
+            }
+            // 첫번째는 있고 두번째는 없는데 연산자 있을 때 -가 찍히는 경우
+            // 두번째 숫자가 음수
+            if(first && !second && operator && event.target.textContent === '-') {
+                second = '-';
+                $result.value = '-';
+                return ;
+            }
+            if(first) {
+                // 첫번째 숫자가 입력됐을 경우
+                operator = event.target.textContent;
+                $operator.value = operator;
+                return ;
+            }
+            // 첫번쨰 숫자가 없을 때
+            if(operator === '-') {
+                first = '+';
+            } else {
+                alert("숫자부터 입력하세요");
+            }
+        }
+
+
+        document.querySelector('#num-0').addEventListener('click', onClickNumber);
+        document.querySelector('#num-1').addEventListener('click', onClickNumber);
+        document.querySelector('#num-2').addEventListener('click', onClickNumber);
+        document.querySelector('#num-3').addEventListener('click', onClickNumber);
+        document.querySelector('#num-4').addEventListener('click', onClickNumber);
+        document.querySelector('#num-5').addEventListener('click', onClickNumber);
+        document.querySelector('#num-6').addEventListener('click', onClickNumber);
+        document.querySelector('#num-7').addEventListener('click', onClickNumber);
+        document.querySelector('#num-8').addEventListener('click', onClickNumber);
+        document.querySelector('#num-9').addEventListener('click', onClickNumber);
+
+        document.querySelector('#plus').addEventListener('click', onClickOperator);
+        document.querySelector('#sub').addEventListener('click', onClickOperator);
+        document.querySelector('#multiply').addEventListener('click', onClickOperator);
+        document.querySelector('#divide').addEventListener('click', onClickOperator);
+
+        document.querySelector('#calculate').addEventListener('click', () => {
+            // 계산 빼기, 곱하기, 나누기는 알아서 숫자로 바꿈 parseInt 불필요
+            switch (operator) {
+                case '+':
+                    $result.value = parseInt(first) + parseInt(second);
+                    break;
+                case '-':
+                    $result.value = parseInt(first) - parseInt(second);
+                    break;
+                case 'x':
+                    $result.value = parseInt(first) * parseInt(second);
+                    break;
+                case '/':
+                    $result.value = parseInt(first) / parseInt(second);
+                    break;
+                default:
+                    break;
+            }
+
+        });
+        document.querySelector('#clear').addEventListener('click', () => {
+            first = '';
+            second = '';
+            operator = '';
+            $operator.value = '';
+            $result.value = '';
+        });
+
+
+    </script>
+</body>
+
+</html>
